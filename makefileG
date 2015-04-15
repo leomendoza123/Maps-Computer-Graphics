@@ -1,4 +1,4 @@
-OBJECTS=mainG.o plot.c bresemham.h
+OBJECTS=mainG.o plot.c bresemham.c datos.c
 OUTPUT=MAIN
 CFLAGS=-I/usr/local/Mesa-3.4/include
 #LDLIBS=-lX11 -lglut -lMesaGLU -lMesaGL -lm -lXext -lXmu

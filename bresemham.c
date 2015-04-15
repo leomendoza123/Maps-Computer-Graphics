@@ -24,7 +24,6 @@ int *algoritmoBresemham (int X1, int Y1, int X2, int Y2)
    e=2*ay-ax;
    for(i=1;i<=ax;i++)   {
       plot(x,y);
-      printPoint(x,y);
       if(e>=0)      {
          if (intercambio==1)
          {

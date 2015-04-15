@@ -7,8 +7,6 @@
  * Archivo: mesa_example.c
  */
 #include "plot.h"
-#include "malloc.h"
-#include "main.h"
 
 
 //======================================================
@@ -20,8 +18,8 @@
 // GLOBAL VARIABLES WRITTEN TO BY reshapeCallBack( )
 //======================================================
 // Window size
-int w_height=400;
-int w_width=400;
+int w_height=800;
+int w_width=800;
 COLOR **buffer;
 
 //======================================================

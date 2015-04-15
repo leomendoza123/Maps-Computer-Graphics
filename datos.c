@@ -5,13 +5,13 @@
 
 double xToFramePoint(double xp, int hres, int xmax, int xmin){
 	double xResult;
-	xResult = ((xp * hres) - (xmin * hres)) / (xmax - xmin);
+	xResult = (double)((xp * hres) - (xmin * hres)) / ( double)(xmax - xmin);
 	return xResult;
 	}
 
 double yToFramePoint(double yp, int vres, int ymax, int ymin){
 	double yResult;
-	yResult = ((yp * vres) - (ymin * vres)) / (ymax - ymin);
+	yResult = (double)( ((yp * vres) - (ymin * vres)) )/ (double)(ymax - ymin);
 	return yResult;
 	}
 
@@ -25,7 +25,7 @@ struct Capsula cargarArchivo (char* nombreArchivo,int vres, int hres, int xmin, 
   int indexPuntos = 0;
   double xValueD;
   double yValueD;
-  
+
            char *line = NULL;
            size_t len = 0;
            ssize_t read;
@@ -39,7 +39,7 @@ struct Capsula cargarArchivo (char* nombreArchivo,int vres, int hres, int xmin, 
            while ((read = getline(&line, &len, stream)) != -1) {
               // printf("Retrieved line of length %zu :\n", read);
               // printf("%s", line);
-               
+
                xValue = strtok(line, search); // X
                yValue = strtok(NULL, search); //Y
                yValue[strlen(yValue) - 1] = '\0'; //se elimina el enter
@@ -57,9 +57,35 @@ struct Capsula cargarArchivo (char* nombreArchivo,int vres, int hres, int xmin, 
            cap.universalPoints[indexPuntos][1] = -7777.77;
            cap.framePoints[indexPuntos][0] = -7777.77;
            cap.framePoints[indexPuntos][1] = -7777.77;
-           
+
            free(line);
            fclose(stream);
           // exit(EXIT_SUCCESS);
            return cap;
 }
+
+
+
+
+
+void carga()
+{
+//resolucion
+int vres = 800;
+int hres = 800;
+int xmin = -86;
+int ymin = 8;
+int xmax = -82;
+int ymax = 12;
+//Obtencion de puntos desde archivos
+//Transformacion de coor universales a framebuffer
+psanjose = cargarArchivo ("mapasshp/sanjose.txt",     vres,hres,xmin,ymin,xmax,ymax);
+ palajuela = cargarArchivo("mapasshp/alajuela.txt",    vres,hres,xmin,ymin,xmax,ymax);
+pheredia = cargarArchivo("mapasshp/heredia.txt",      vres,hres,xmin,ymin,xmax,ymax);
+pcartago = cargarArchivo("mapasshp/cartago.txt",      vres,hres,xmin,ymin,xmax,ymax);
+plimon = cargarArchivo("mapasshp/limon.txt",          vres,hres,xmin,ymin,xmax,ymax);
+ppuntarenas = cargarArchivo("mapasshp/puntarenas.txt",vres,hres,xmin,ymin,xmax,ymax);
+pguanacaste = cargarArchivo("mapasshp/guanacaste.txt",vres,hres,xmin,ymin,xmax,ymax);
+
+}
+
