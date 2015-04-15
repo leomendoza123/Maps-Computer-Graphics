@@ -7,8 +7,10 @@ void cargarArchivo (char* nombreArchivo){
   double puntos[1000][2];
   char *xValue;
   char *yValue;
+  char xV;
+  char yV;
   //char line[] = "SEVERAL WORDS";
-  char *search = " ";
+  char *search = ",";
   int indexPuntos = 0;
   
            char *line = NULL;
@@ -23,13 +25,16 @@ void cargarArchivo (char* nombreArchivo){
               // printf("Retrieved line of length %zu :\n", read);
               // printf("%s", line);
                
-               // Token will point to "SEVERAL".
                xValue = strtok(line, search); // X
-               // Token will point to "WORDS".
                yValue = strtok(NULL, search); //Y
-               
-               puntos[indexPuntos][0] =  strtod(xValue,NULL);
-               puntos[indexPuntos][1] =  strtod(yValue,NULL);
+               yValue[strlen(yValue) - 1] = '\0'; //se elimina el enter
+
+               puntos[indexPuntos][0] =  atof(xValue);
+               puntos[indexPuntos][1] =  atof(yValue); 
+                printf("x: %f",puntos[indexPuntos][0]);
+                printf("y: %f",puntos[indexPuntos][1]);
+                
+                printf("\n");
                indexPuntos = indexPuntos + 1;
            }
 
