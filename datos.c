@@ -1,25 +1,40 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
- 
-void cargarArchivo (char* nombreArchivo){
+#include "datos.h"
+
+double xToFramePoint(double xp, int hres, int xmax, int xmin){
+	double xResult;
+	xResult = ((xp * hres) - (xmin * hres)) / (xmax - xmin);
+	return xResult;
+	}
+
+double yToFramePoint(double yp, int vres, int ymax, int ymin){
+	double yResult;
+	yResult = ((yp * vres) - (ymin * vres)) / (ymax - ymin);
+	return yResult;
+	}
+
+
+struct Capsula cargarArchivo (char* nombreArchivo,int vres, int hres, int xmin, int ymin, int xmax, int ymax){
   FILE *stream;
-  double puntos[1000][2];
+  struct Capsula cap;
   char *xValue;
   char *yValue;
-  char xV;
-  char yV;
-  //char line[] = "SEVERAL WORDS";
   char *search = ",";
   int indexPuntos = 0;
+  double xValueD;
+  double yValueD;
   
            char *line = NULL;
            size_t len = 0;
            ssize_t read;
 
            stream = fopen(nombreArchivo, "r");
-           if (stream == NULL)
-               exit(EXIT_FAILURE);
+           if (stream == NULL){
+			   printf("no se pudo leer mapa");
+			   exit(EXIT_FAILURE);
+			   }
 
            while ((read = getline(&line, &len, stream)) != -1) {
               // printf("Retrieved line of length %zu :\n", read);
@@ -29,16 +44,22 @@ void cargarArchivo (char* nombreArchivo){
                yValue = strtok(NULL, search); //Y
                yValue[strlen(yValue) - 1] = '\0'; //se elimina el enter
 
-               puntos[indexPuntos][0] =  atof(xValue);
-               puntos[indexPuntos][1] =  atof(yValue); 
-                printf("x: %f",puntos[indexPuntos][0]);
-                printf("y: %f",puntos[indexPuntos][1]);
-                
-                printf("\n");
+                xValueD = atof(xValue);
+                yValueD = atof(yValue);
+               cap.universalPoints[indexPuntos][0] =  xValueD;
+               cap.universalPoints[indexPuntos][1] =  yValueD;
+               cap.framePoints[indexPuntos][0] = xToFramePoint(xValueD,hres,xmax,xmin);
+               cap.framePoints[indexPuntos][1] = yToFramePoint(yValueD,hres,ymax,ymin);
                indexPuntos = indexPuntos + 1;
            }
-
+           //Delimitador final
+           cap.universalPoints[indexPuntos][0] = -7777.77;
+           cap.universalPoints[indexPuntos][1] = -7777.77;
+           cap.framePoints[indexPuntos][0] = -7777.77;
+           cap.framePoints[indexPuntos][1] = -7777.77;
+           
            free(line);
            fclose(stream);
-           exit(EXIT_SUCCESS);
+          // exit(EXIT_SUCCESS);
+           return cap;
 }
