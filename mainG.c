@@ -41,9 +41,9 @@ void dibujarFramepoints(struct Capsula framepoints){
 	    punto.X = framepoints.framePoints[i][0];
         punto.Y = framepoints.framePoints[i][1];
         struct Punto PUNTO2 =  OperaPunto(punto, framepoints.zoom, framepoints.panx, framepoints.pany, framepoints.rotacion);
-        struct Linea LINEA = LiangBarsky (PUNTO1, PUNTO2, 10, 550, 10, 550);
-        algoritmoBresemham ( LINEA.punto1.X,  LINEA.punto1.Y,  LINEA.punto2.X, LINEA.punto2.Y);
-        printf ("%f, %f", LINEA.punto1.X, LINEA.punto1.Y);
+        //struct Linea LINEA = LiangBarsky (PUNTO1, PUNTO2, 10, 550, 10, 550);
+        algoritmoBresemham ( PUNTO1.X,  PUNTO1.Y,  PUNTO2.X, PUNTO2.Y);
+        //printf ("%f, %f", LINEA.punto1.X, LINEA.punto1.Y);
         PUNTO1 = PUNTO2;
         i++;
 
@@ -51,7 +51,7 @@ void dibujarFramepoints(struct Capsula framepoints){
 
 
 }
-
+/*
 struct Linea LiangBarsky (struct Punto punto0src, struct Punto punto1src,
                 double edgeLeft, double edgeRight, double edgeBottom, double edgeTop )
 {
@@ -95,7 +95,7 @@ struct Linea LiangBarsky (struct Punto punto0src, struct Punto punto1src,
     return lineaResultado;
 
 }
-
+*/
 
 void cargaBuffer(void){
     dibujarFramepoints (psanjose);
