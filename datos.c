@@ -44,12 +44,15 @@ struct Capsula cargarArchivo (char* nombreArchivo,int vres, int hres, int xmin, 
                yValue = strtok(NULL, search); //Y
                yValue[strlen(yValue) - 1] = '\0'; //se elimina el enter
 
-                xValueD = atof(xValue);
-                yValueD = atof(yValue);
+
+                sscanf(xValue, "%lf", &xValueD);
+                sscanf(yValue, "%lf", &yValueD);
                cap.universalPoints[indexPuntos][0] =  xValueD;
                cap.universalPoints[indexPuntos][1] =  yValueD;
                cap.framePoints[indexPuntos][0] = xToFramePoint(xValueD,hres,xmax,xmin);
                cap.framePoints[indexPuntos][1] = yToFramePoint(yValueD,hres,ymax,ymin);
+               cap.tempFramePoints[indexPuntos][0] = cap.framePoints[indexPuntos][0];
+               cap.tempFramePoints[indexPuntos][1] = cap.framePoints[indexPuntos][1];
                indexPuntos = indexPuntos + 1;
            }
            //Delimitador final
@@ -57,6 +60,13 @@ struct Capsula cargarArchivo (char* nombreArchivo,int vres, int hres, int xmin, 
            cap.universalPoints[indexPuntos][1] = -7777.77;
            cap.framePoints[indexPuntos][0] = -7777.77;
            cap.framePoints[indexPuntos][1] = -7777.77;
+           cap.tempFramePoints[indexPuntos][0] = cap.framePoints[indexPuntos][0];
+           cap.tempFramePoints[indexPuntos][1] = cap.framePoints[indexPuntos][1];
+
+           cap.rotacion = 0;
+           cap.panx = 0;
+           cap.pany = 0;
+           cap.zoom = 1;
 
            free(line);
            fclose(stream);
@@ -71,8 +81,8 @@ struct Capsula cargarArchivo (char* nombreArchivo,int vres, int hres, int xmin, 
 void carga()
 {
 //resolucion
-int vres = 800;
-int hres = 800;
+int vres = 600;
+int hres = 600;
 int xmin = -86;
 int ymin = 8;
 int xmax = -82;
@@ -80,12 +90,15 @@ int ymax = 12;
 //Obtencion de puntos desde archivos
 //Transformacion de coor universales a framebuffer
 psanjose = cargarArchivo ("mapasshp/sanjose.txt",     vres,hres,xmin,ymin,xmax,ymax);
- palajuela = cargarArchivo("mapasshp/alajuela.txt",    vres,hres,xmin,ymin,xmax,ymax);
+palajuela = cargarArchivo("mapasshp/alajuela.txt",    vres,hres,xmin,ymin,xmax,ymax);
 pheredia = cargarArchivo("mapasshp/heredia.txt",      vres,hres,xmin,ymin,xmax,ymax);
 pcartago = cargarArchivo("mapasshp/cartago.txt",      vres,hres,xmin,ymin,xmax,ymax);
 plimon = cargarArchivo("mapasshp/limon.txt",          vres,hres,xmin,ymin,xmax,ymax);
 ppuntarenas = cargarArchivo("mapasshp/puntarenas.txt",vres,hres,xmin,ymin,xmax,ymax);
 pguanacaste = cargarArchivo("mapasshp/guanacaste.txt",vres,hres,xmin,ymin,xmax,ymax);
+
+ESCALAX = (xmax-xmin)/hres;
+ESCALAY = (ymax-ymin)/vres;
 
 }
 

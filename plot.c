@@ -18,8 +18,8 @@
 // GLOBAL VARIABLES WRITTEN TO BY reshapeCallBack( )
 //======================================================
 // Window size
-int w_height=800;
-int w_width=800;
+int w_height=600;
+int w_width=600;
 COLOR **buffer;
 
 //======================================================
@@ -55,24 +55,28 @@ void BufferInit (){
 	buffer = (COLOR **)malloc(w_height * sizeof(COLOR*));
 	for (i = 0; i < w_height; i++)
 	{
-		buffer[i] = (COLOR *)malloc(w_height * sizeof(COLOR));
+		buffer[i] = (COLOR *)malloc(w_width * sizeof(COLOR));
 	}
 	for (i = 0; i < w_height; i++)
 	{
-		for (j = 0; j < w_height; j++){
+
+		for (j = 0; j < w_width; j++){
 			buffer[i][j].r = 0;
 			buffer[i][j].g = 0;
-			buffer[i][j].b = 0;
+			buffer[i][j].b = 1;
 		}
 	}
 }
 
 void draw_scene() {
-	static int last_x = 0;
-	int i, j;
-	COLOR color;
 
-	for (i = last_x; i < w_height; i++)
+    BufferInit ();
+    cargaBuffer ();
+
+    //glClear( GL_COLOR_BUFFER_BIT);
+
+	int i, j;
+	for (i = 0; i < w_height; i++)
 	{
 		for (j = 0; j < w_width; j++)
 		{
@@ -80,7 +84,6 @@ void draw_scene() {
 			glBegin(GL_POINTS);
 			glVertex2i(i,j);
 			glEnd();
-			last_x = i;
 		}
 	}
 	glFlush();
@@ -114,22 +117,30 @@ void reshapeCallback (int width, int height)
 //======================================================
 void motionCallBack(int x, int y)
 {
-	printf("YYYMotion call back: %d, %d)\n", x, y);
-	//Set square's location to current mouse position
-	 BufferInit ();
-	square_x = x;
-	square_y = w_height-y; //Invert mouse y (as its measured from top)
 
-	glutPostRedisplay();
 }
 
 //======================================================
 // MOUSE CALLBACK ROUTINE
 //======================================================
+int arrastreInicioX = 0;
+int arrastreInicioY = 0;
 void mouseCallBack(int btn, int state, int x, int y)
 {
-	printf("Mouse call back: button=%d, state=%d, x=%d, y=%d\n", btn, state, x, y);
-    if(btn==GLUT_RIGHT_BUTTON && state==GLUT_DOWN)   exit(0);
+	//printf("Mouse call back: button=%d, state=%d, x=%d, y=%d\n", btn, state, x, y);
+    if(btn==GLUT_RIGHT_BUTTON && state==GLUT_DOWN){
+       exit(0);
+    }
+    else if (btn == 0, state == 0){
+        arrastreInicioX = x;
+        arrastreInicioY = y;
+    }
+    else if(btn == 0, state == 1){
+        paneoDePuntos (x-arrastreInicioX, y-arrastreInicioY);
+        glutPostRedisplay();
+
+
+    }
 }
 
 //======================================================
@@ -137,23 +148,28 @@ void mouseCallBack(int btn, int state, int x, int y)
 //======================================================
 void keyboardCallBack(unsigned char key, int x, int y)
 {
-	printf("Keyboard call back: key=%c, x=%d, y=%d, theta=%f\n", key, x, y, theta);
+	//printf("Keyboard call back: key=%c, x=%d, y=%d, theta=%f\n", key, x, y, theta);
 	switch(key)
 	{
-	case 'I':
-		glutIdleFunc(idleCallBack);
-		printf("Idle function ON\n");
+	case 'w':
+		zoomDePuntos(0.1);
 	break;
-	case 'i':
-		glutIdleFunc(NULL);
-		printf("Idle function OFF\n");
+	case 's':
+		zoomDePuntos(-0.1);
 	break;
-	case 'r':
-		theta = theta + 10.0;
+    case 'a':
+		rotacionDePuntos(-0.1);
 	break;
-	default:
-		printf("Press i (Idle Off), I (Idle ON) or r (Rotate)");
-	}
+	case 'd':
+		rotacionDePuntos(0.1);
+	break;
+    case 'r':
+		reiniciaPuntos();
+	break;
+    case 't':
+		exit(0);
+	break;
+    }
 
 	glutPostRedisplay();
 }
@@ -195,12 +211,6 @@ void init ()
 	glutReshapeFunc(reshapeCallback);
 
 	// Print Application Usage
-	printf("Program Controls:\n");
-	printf("Left Mouse Button & Drag - Draws the square at mouse location.\n");
-	printf("Right Mouse Button - Exits the program.\n");
-	printf("Key \"I\" - Enables idle callbacks.\n");
-	printf("Key \"i\" - Disables idle callbacks.\n");
-	printf("Key \"r\" - Rotates square.\n");
 
 	// Enter main event loop
 	glutMainLoop();

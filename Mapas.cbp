@@ -31,7 +31,12 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="MAIN" />
 		<Unit filename="Mapas.cbp" />
+		<Unit filename="bresemham.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="bresemham.h" />
 		<Unit filename="datos.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -44,6 +49,7 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="mainG.h" />
+		<Unit filename="mainG.o" />
 		<Unit filename="makefile" />
 		<Unit filename="makefileG" />
 		<Unit filename="plot.c">
