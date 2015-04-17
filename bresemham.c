@@ -1,9 +1,12 @@
 #include "bresemham.h"
+#include "mainG.h"
+#include "plot.h"
 
-int *algoritmoBresemham (int X1, int Y1, int X2, int Y2)
+
+void *algoritmoBresemham (int X1, int Y1, int X2, int Y2)
 
 {
-    clock_t start = clock(), diff;
+    struct ColorCap blanco = {1,1,1};
     int e,ax,ay,temp;
     int s1,s2,intercambio,i,x,y;
    x=X1;
@@ -23,7 +26,7 @@ int *algoritmoBresemham (int X1, int Y1, int X2, int Y2)
    }
    e=2*ay-ax;
    for(i=1;i<=ax;i++)   {
-      plot(x,y);
+      plot(x,y, blanco);
       if(e>=0)      {
          if (intercambio==1)
          {
@@ -44,8 +47,6 @@ int *algoritmoBresemham (int X1, int Y1, int X2, int Y2)
       }
       e=e+2*ay;
    }
-   return     diff = clock() - start;
-    return diff;
 
 }
 

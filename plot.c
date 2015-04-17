@@ -7,6 +7,7 @@
  * Archivo: mesa_example.c
  */
 #include "plot.h"
+#include "mainG.h"
 
 
 //======================================================
@@ -20,7 +21,7 @@
 // Window size
 int w_height=600;
 int w_width=600;
-COLOR **buffer;
+struct ColorCap **buffer;
 
 //======================================================
 // GLOBAL VARIABLES WRITTEN TO BY displayCallBack( )
@@ -42,20 +43,20 @@ int square_dx = 1; // incremental change insquare_x
 
 
 
-void plot (i,j){
+void plot (int i, int j, struct ColorCap color){
 	if (i>=0&&i<w_height && j>=0&&j< w_height ){
-		buffer[i][j].r = 1;
-		buffer[i][j].g = 1;
-		buffer[i][j].b = 1;
+		buffer[i][j].r = color.r;
+		buffer[i][j].g = color.g ;
+		buffer[i][j].b = color.b;
 	}
 }
 
 void BufferInit (){
 	int i, j;
-	buffer = (COLOR **)malloc(w_height * sizeof(COLOR*));
+	buffer = (ColorCap **)malloc(w_height * sizeof(ColorCap*));
 	for (i = 0; i < w_height; i++)
 	{
-		buffer[i] = (COLOR *)malloc(w_width * sizeof(COLOR));
+		buffer[i] = (ColorCap *)malloc(w_width * sizeof(ColorCap));
 	}
 	for (i = 0; i < w_height; i++)
 	{
@@ -90,6 +91,8 @@ void draw_scene() {
 		//Swap double buffers
 	glutSwapBuffers();
 }
+
+
 
 //======================================================
 // IDLE CALLBACK ROUTINE
@@ -146,6 +149,7 @@ void mouseCallBack(int btn, int state, int x, int y)
 //======================================================
 // KEYBOARD CALLBACK ROUTINE
 //======================================================
+
 void keyboardCallBack(unsigned char key, int x, int y)
 {
 	//printf("Keyboard call back: key=%c, x=%d, y=%d, theta=%f\n", key, x, y, theta);
@@ -164,8 +168,11 @@ void keyboardCallBack(unsigned char key, int x, int y)
 		rotacionDePuntos(0.1);
 	break;
     case 'r':
-		reiniciaPuntos();
+	reiniciaPuntos();
 	break;
+    case 'q':
+		TD = (TD +1)%3;
+    break;
     case 't':
 		exit(0);
 	break;

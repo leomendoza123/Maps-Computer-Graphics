@@ -1,0 +1,4 @@
+Compilar usando el makefile "makefileG"
+
+
+Este proyecto usa la libreria qdbmp para la lectura de las texturas o BMPs. Más información en: http://qdbmp.sourceforge.net/
